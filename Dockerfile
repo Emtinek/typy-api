@@ -10,7 +10,6 @@ RUN apt-get update && apt-get install -y \
     libnss3 \
     libxss1 \
     libappindicator1 \
-    libindicator7 \
     libasound2 \
     libgbm-dev \
     libgtk-3-0 \
@@ -18,6 +17,7 @@ RUN apt-get update && apt-get install -y \
     libxi6 \
     xvfb \
     --no-install-recommends && rm -rf /var/lib/apt/lists/*
+
 
 # Instalacja Google Chrome
 RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
