@@ -8,7 +8,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 
-
 def get_forebet_predictions():
     options = Options()
     options.add_argument("start-maximized")
@@ -36,15 +35,12 @@ def get_forebet_predictions():
     print("🔄 Scrolluję i klikam właściwy 'More'...")
     for i in range(10):  # max 10 razy kliknij More
         try:
-            # Szukaj przycisku "More" w sekcji mrows
             more_btn = wait.until(EC.presence_of_element_located(
                 (By.XPATH, "//div[@id='mrows']//span[text()='More']")))
 
-            # Przewiń dokładnie do przycisku
             driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", more_btn)
             time.sleep(2)
 
-            # Czekaj aż będzie klikalny i kliknij
             wait.until(EC.element_to_be_clickable(
                 (By.XPATH, "//div[@id='mrows']//span[text()='More']"))).click()
 
@@ -93,7 +89,6 @@ def get_forebet_predictions():
 
     print(f"\n📥 Zapisano {len(matches)} typów do matches.json")
 
-
-# 🔽 Upewnij się, że to jest na samym dole pliku
-:
+# 🔽 Punkt startowy do uruchamiania samodzielnie tego pliku
+if __name__ == "__main__":
     get_forebet_predictions()
