@@ -13,7 +13,10 @@ def get_forebet_predictions():
     options.add_argument("start-maximized")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--no-sandbox")
-    options.add_argument("--headless")
+    options.add_argument("--headless=new")  # nowy headless, lżejszy
+    options.add_argument("--disable-gpu")
+    options.add_argument("--window-size=1280x720")
+    options.add_argument("--blink-settings=imagesEnabled=false")  # wyłącz obrazki
 
     driver = webdriver.Chrome(service=Service(), options=options)
     wait = WebDriverWait(driver, 10)
@@ -33,7 +36,7 @@ def get_forebet_predictions():
 
     # 🔄 Scrollowanie i klikanie właściwego "More"
     print("🔄 Scrolluję i klikam właściwy 'More'...")
-    for i in range(10):  # max 10 razy kliknij More
+    for i in range(3):  # ⛔ ogranicz do 3 kliknięć (optymalizacja dla Render)
         try:
             more_btn = wait.until(EC.presence_of_element_located(
                 (By.XPATH, "//div[@id='mrows']//span[text()='More']")))
@@ -89,6 +92,7 @@ def get_forebet_predictions():
 
     print(f"\n📥 Zapisano {len(matches)} typów do matches.json")
 
-# 🔽 Punkt startowy do uruchamiania samodzielnie tego pliku
+# 🔽 Punkt startowy
 if __name__ == "__main__":
     get_forebet_predictions()
+
