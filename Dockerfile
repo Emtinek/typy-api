@@ -18,30 +18,29 @@ RUN apt-get update && apt-get install -y \
     xvfb \
     --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
+# Instalacja Google Chrome (wersja stable z Google)
+RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - && \
+    echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list && \
+    apt-get update && \
+    apt-get install -y google-chrome-stable && \
+    rm -rf /var/lib/apt/lists/*
 
-# Instalacja Google Chrome
-RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
-    && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list \
-    && apt-get update \
-    && apt-get install -y google-chrome-stable \
-    && google-chrome-stable --version \
-    && rm -rf /var/lib/apt/lists/*
-
-# Instalacja konkretnej wersji ChromeDriver (dopasowanej do Chrome 124)
-RUN wget -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/126.0.6478.61/chromedriver_linux64.zip && \
+# Instalacja ChromeDriver pasującego do Chrome 138
+RUN wget -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/138.0.6044.118/chromedriver_linux64.zip && \
     unzip /tmp/chromedriver.zip -d /usr/local/bin/ && \
     rm /tmp/chromedriver.zip
-
 
 # Ustaw PATH
 ENV PATH="/usr/local/bin:$PATH"
 
-# Ustaw katalog roboczy
+# Katalog roboczy
 WORKDIR /app
 COPY . .
 
 # Instalacja zależności Pythona
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Uruchom aplikację przez gunicorn
+# Start aplikacji
 CMD ["gunicorn", "--bind", "0.0.0.0:10000", "app:app"]
+
+
